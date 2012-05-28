@@ -41,8 +41,6 @@ public final class Methods {
 
 
     public static void interact(Entity entity, final Tile loc, final String action, final String option) {
-        System.out.println(action + " - " + option);
-
         if (entity.getBounds().length == 1) {
             entity = loc;
         }
@@ -149,9 +147,7 @@ public final class Methods {
     public static String getTargetName(final Object obj) {
         if (obj instanceof NPC) {
             return getTargetName((NPC) obj);
-        }
-
-        if (obj instanceof SceneObject) {
+        } else if (obj instanceof SceneObject) {
             return getTargetName((SceneObject) obj);
         }
 
