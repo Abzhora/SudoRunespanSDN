@@ -41,6 +41,8 @@ public final class Methods {
 
 
     public static void interact(Entity entity, final Tile loc, final String action, final String option) {
+        System.out.println(action + " - " + option);
+
         if (entity.getBounds().length == 1) {
             entity = loc;
         }
@@ -144,14 +146,24 @@ public final class Methods {
         });
     }
 
-    public static String getTargetName(final Entity target) {
-        if (target instanceof NPC) {
-            return Monster.getMonster(((NPC) target).getId()).getName();
-        } else if (target instanceof SceneObject) {
-            return Node.getNode(((SceneObject) target).getId()).getName();
+    public static String getTargetName(final Object obj) {
+        if (obj instanceof NPC) {
+            return getTargetName((NPC) obj);
+        }
+
+        if (obj instanceof SceneObject) {
+            return getTargetName((SceneObject) obj);
         }
 
         return null;
+    }
+
+    public static String getTargetName(final NPC npc) {
+        return Monster.getMonster(npc.getId()).getName();
+    }
+
+    public static String getTargetName(final SceneObject scnObj) {
+        return Node.getNode(scnObj.getId()).getName();
     }
 
     public static boolean isOrientedTowards(final Tile t2) {

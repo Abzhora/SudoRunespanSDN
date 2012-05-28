@@ -4,7 +4,7 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.interactive.Players;
 import org.powerbot.game.api.methods.tab.Inventory;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.Item;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -21,7 +21,7 @@ import org.sudorunespan.misc.Methods;
 
 public class AttackTarget extends AbstractStrategy {
     private static final int RUNE_ESS_ID = 24227;
-    private Tile location;
+    private Entity entity;
 
     @Override
     protected boolean isValid() {
@@ -50,7 +50,7 @@ public class AttackTarget extends AbstractStrategy {
                     if (node.getId() != SudoRunespan.getCurrentId()) {
                         SudoRunespan.setTarget(node.getLocation());
                         SudoRunespan.setCurrentId(node.getId());
-                        location = node.getLocation();
+                        entity = node;
                         return true;
                     } else {
                         return false;
@@ -69,7 +69,7 @@ public class AttackTarget extends AbstractStrategy {
             if (monster.getId() != SudoRunespan.getCurrentId()) {
                 SudoRunespan.setTarget(monster.getLocation());
                 SudoRunespan.setCurrentId(monster.getId());
-                location = monster.getLocation();
+                entity = monster;
                 return true;
             } else {
                 return false;
@@ -83,7 +83,7 @@ public class AttackTarget extends AbstractStrategy {
 
     @Override
     protected void process() {
-        Methods.interact(SudoRunespan.getTarget(), location, "Siphon",
-                Methods.getTargetName(SudoRunespan.getTarget()));
+        Methods.interact(entity, SudoRunespan.getTarget(), "Siphon",
+                Methods.getTargetName(entity));
     }
 }

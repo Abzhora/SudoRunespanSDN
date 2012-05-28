@@ -16,7 +16,6 @@ import org.sudorunespan.misc.Methods;
  */
 
 public class AntiBan extends AbstractStrategy {
-
     public AntiBan() {
         setLock(false);
     }
