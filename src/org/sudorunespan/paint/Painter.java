@@ -22,13 +22,14 @@ import java.text.DecimalFormat;
 
 public class Painter extends Strategy implements PaintListener {
     private static final DecimalFormat df = new DecimalFormat("#.##");
-    private int startXp, startPoints, gainedPoints;
+    private int startXp, startPoints, gainedPoints, startLvl;
     private Timer timer;
     private MouseTrail mouseTrail;
     private FloatingWindow window;
 
     public Painter() {
         startXp = Skills.getExperience(Skills.RUNECRAFTING);
+        startLvl = Skills.getRealLevel(Skills.RUNECRAFTING);
         startPoints = Integer.parseInt(Widgets.get(1274, 2).getText());
         gainedPoints = 0;
         timer = new Timer(0);
@@ -112,7 +113,7 @@ public class Painter extends Strategy implements PaintListener {
 
         public FloatingWindow() {
             loc = new Point(10, 180);
-            size = new Dimension(200, 125);
+            size = new Dimension(200, 135);
         }
 
         public void draw(final Graphics g, final int xpGained, final int pointsGained) {
@@ -151,7 +152,11 @@ public class Painter extends Strategy implements PaintListener {
             g.drawString("TTL:", loc.x+5, loc.y+101);
             g.drawString("" + Time.format(XPMS > 0 ? (long) (ETL / XPMS) : 0), loc.x+105, loc.y+101);
 
-            g.drawString(getProgressBar(), loc.x+5, loc.y+118);
+            final int curLevel = Skills.getRealLevel(Skills.RUNECRAFTING);
+            g.drawString("Level:", loc.x+5, loc.y+111);
+            g.drawString(curLevel + " (+" + (curLevel-startLvl) + ")", loc.x+105, loc.y+111);
+
+            g.drawString(getProgressBar(), loc.x+5, loc.y+128);
         }
 
         private String getProgressBar() {

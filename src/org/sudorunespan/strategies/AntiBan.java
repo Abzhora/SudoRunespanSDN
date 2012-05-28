@@ -16,6 +16,11 @@ import org.sudorunespan.misc.Methods;
  */
 
 public class AntiBan extends AbstractStrategy {
+
+    public AntiBan() {
+        setLock(false);
+    }
+
     @Override
     public boolean isValid() {
         return Random.nextInt(0, 50) == 0;

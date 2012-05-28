@@ -39,9 +39,11 @@ public class SudoRunespan extends ActiveScript {
     private final class Setup implements Task {
         @Override
         public void run() {
-            for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
-                Tabs.FRIENDS.open();
-                Time.sleep(200);
+            synchronized (Methods.mouseLock) {
+                for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
+                    Tabs.FRIENDS.open();
+                    Time.sleep(200);
+                }
             }
 
             members = Methods.isMembersWorld(Methods.getCurrentWorld());

@@ -31,6 +31,7 @@ import java.awt.*;
  */
 
 public final class Methods {
+    public final static Object mouseLock = new Object();
     private static final int[] MEMBERS_WORLDS =
             {2, 6, 9, 12, 18, 22, 23, 24, 27, 28, 31, 36, 39, 42, 44, 45, 46, 48, 53,
             54, 56, 58, 59, 60, 64, 65, 66, 69, 70, 71, 76, 77, 78, 79, 82,
@@ -46,14 +47,18 @@ public final class Methods {
 
         if (!Calculations.isOnScreen(entity.getCentralPoint()) || Calculations.distanceTo(loc) > 5) {
             if (!Players.getLocal().isMoving()) {
-                Walking.findPath(loc.derive(Random.nextInt(-1, 2), Random.nextInt(-1, 2))).traverse();
+                synchronized (mouseLock) {
+                    Walking.findPath(loc.derive(Random.nextInt(-1, 2), Random.nextInt(-1, 2))).traverse();
+                }
             }
 
             Camera.turnTo(loc.derive(Random.nextInt(-2, 5), Random.nextInt(-2, 5)));
         } else {
-            entity.hover();
-            entity.hover();
-            entity.interact(action, option);
+            synchronized (mouseLock) {
+                entity.hover();
+                entity.hover();
+                entity.interact(action, option);
+            }
 
             wiggleMouse();
             Time.sleep(Random.nextInt(1500, 2000));
@@ -61,8 +66,10 @@ public final class Methods {
     }
 
     public static void wiggleMouse() {
-        final Point p = Mouse.getLocation();
-        Mouse.move(new Point(Random.nextInt(-50, 50) + p.x, Random.nextInt(-50, 50) + p.y));
+        synchronized (mouseLock) {
+            final Point p = Mouse.getLocation();
+            Mouse.move(new Point(Random.nextInt(-50, 50) + p.x, Random.nextInt(-50, 50) + p.y));
+        }
     }
 
     public static SceneObject getBestReachableNode() {
