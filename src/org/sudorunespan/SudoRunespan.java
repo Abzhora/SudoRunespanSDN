@@ -17,9 +17,10 @@ import org.sudorunespan.strategies.*;
  * Time: 11:30 AM
  */
 
-@Manifest(name = "SudoRunespan", description = "The best Runespan bot SDN version!", authors = {"Deprecated"})
+@Manifest(name = "SudoRunespan", version = 2.0, description = "The best Runespan bot SDN version!", authors = {"Deprecated"},
+        website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
 public class SudoRunespan extends ActiveScript {
-    private static boolean members = false, nodeBlock = false;
+    private static boolean members, nodeBlock;
     private static Tile target;
     private static final Object targetAccessLock = new Object();
     private static int currentId;

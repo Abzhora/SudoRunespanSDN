@@ -56,7 +56,7 @@ public final class Methods {
             entity.interact(action, option);
 
             wiggleMouse();
-            Time.sleep(Random.nextInt(1000, 1300));
+            Time.sleep(Random.nextInt(1500, 2000));
         }
     }
 
@@ -145,6 +145,22 @@ public final class Methods {
         }
 
         return null;
+    }
+
+    public static boolean isOrientedTowards(final Tile t2) {
+        if (t2 == null) {
+            return false;
+        }
+
+        final Tile t1 = Players.getLocal().getLocation();
+        if (t1.equals(t2)) {
+            return true;
+        }
+
+        final int xDiv = (t2.getX()-t1.getX()), yDiv = (t2.getY()-t1.getY());
+        final double orient = Players.getLocal().getOrientation();
+        final double angle = (Math.toDegrees(Math.atan2(yDiv, xDiv))+360)%360;
+        return Math.abs(angle-orient) < 5;   //small deviation when converting radians to and from degrees
     }
 
     public static boolean isMembersWorld(final int world) {

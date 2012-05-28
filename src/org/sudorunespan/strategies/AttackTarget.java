@@ -31,7 +31,7 @@ public class AttackTarget extends AbstractStrategy {
         }
 
         if (!Methods.validate(SudoRunespan.getTarget(), SudoRunespan.getCurrentId()) ||
-                Players.getLocal().getAnimation() == -1) {
+                Players.getLocal().getAnimation() == -1 || !Methods.isOrientedTowards(SudoRunespan.getTarget())) {
             SudoRunespan.setTarget(null);
             SudoRunespan.setCurrentId(-1);
         }
