@@ -17,13 +17,13 @@ import org.sudorunespan.strategies.*;
  * Time: 11:30 AM
  */
 
-@Manifest(name = "SudoRunespan", version = 2.0, description = "The best Runespan bot SDN version!", authors = {"Deprecated"},
+@Manifest(name = "SudoRunespan", version = 2.01, description = "The best Runespan bot SDN version!", authors = {"Deprecated"},
         website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
 public class SudoRunespan extends ActiveScript {
-    private static boolean members, nodeBlock;
+    private static boolean nodeBlock;
     private static Tile target;
     private static final Object targetAccessLock = new Object();
-    private static int currentId;
+    private static int currentId, world;
 
     @Override
     protected void setup() {
@@ -39,19 +39,27 @@ public class SudoRunespan extends ActiveScript {
     private final class Setup implements Task {
         @Override
         public void run() {
-            synchronized (Methods.mouseLock) {
-                for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
-                    Tabs.FRIENDS.open();
-                    Time.sleep(200);
-                }
-            }
-
-            members = Methods.isMembersWorld(Methods.getCurrentWorld());
+            loadWorldData();
         }
     }
 
+    public static void loadWorldData() {
+        synchronized (Methods.mouseLock) {
+            for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
+                Tabs.FRIENDS.open();
+                Time.sleep(200);
+            }
+        }
+
+        world = Methods.getCurrentWorld();
+    }
+
     public static boolean isMembers() {
-        return members;
+        if (world == 0) {
+            loadWorldData();
+        }
+
+        return Methods.isMembersWorld(world);
     }
 
     public static boolean isNodeBlock() {
