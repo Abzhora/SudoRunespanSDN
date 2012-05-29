@@ -52,7 +52,7 @@ public enum Monster {
         return lvl;
     }
 
-    public boolean isMembers() {
+    boolean isMembers() {
         return members;
     }
 

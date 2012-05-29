@@ -1,1 +1,21 @@
 SudoRunespan by Deprecated for the RSBot botting client.
+
+To add this script to RSBot:
+
+1) Precompiled class files
+  You can find the latest build of the class files in the downloads section.
+  Just download and decompress the archive onto your computer, then copy and paste
+  the "org" folder into your RSBot "bin" folder.  Run RSBot with the -dev flag
+  and it should appear in the script loader.
+
+2) Source files
+  If you have an IDE it may just be easier to pull my project into your IDE.
+  Make sure to have the latest RSBot as a library and set up the program
+  arguments with the -dev flag.  SudoRunespan should show up in the script loader.
+
+
+Change Log:
+    2.00   Initial release!
+    2.01   Improved paint
+    2.02   Made members testing bug free
+    2.03   Misc improvements, paint changes color on mouse click

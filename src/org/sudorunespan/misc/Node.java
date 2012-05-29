@@ -51,7 +51,7 @@ public enum Node {
         return name;
     }
 
-    public boolean isMembers() {
+    boolean isMembers() {
         return members;
     }
 

@@ -154,11 +154,11 @@ public final class Methods {
         return null;
     }
 
-    public static String getTargetName(final NPC npc) {
+    private static String getTargetName(final NPC npc) {
         return Monster.getMonster(npc.getId()).getName();
     }
 
-    public static String getTargetName(final SceneObject scnObj) {
+    private static String getTargetName(final SceneObject scnObj) {
         return Node.getNode(scnObj.getId()).getName();
     }
 
@@ -198,7 +198,7 @@ public final class Methods {
     }
 
     public static boolean validate(final Tile tile, final int id) {
-        if (tile == null || id == -1) {
+        if (tile == null || id == -1 || !tile.canReach()) {
             return false;
         }
 

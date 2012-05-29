@@ -17,7 +17,7 @@ import org.sudorunespan.strategies.*;
  * Time: 11:30 AM
  */
 
-@Manifest(name = "SudoRunespan", version = 2.01, description = "The best Runespan bot SDN version!", authors = {"Deprecated"},
+@Manifest(name = "SudoRunespan", version = 2.03, description = "The best Runespan bot SDN version!", authors = {"Deprecated"},
         website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
 public class SudoRunespan extends ActiveScript {
     private static boolean nodeBlock;
@@ -43,7 +43,7 @@ public class SudoRunespan extends ActiveScript {
         }
     }
 
-    public static void loadWorldData() {
+    private static void loadWorldData() {
         synchronized (Methods.mouseLock) {
             for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
                 Tabs.FRIENDS.open();

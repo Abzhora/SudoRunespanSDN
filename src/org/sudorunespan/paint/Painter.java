@@ -11,6 +11,8 @@ import org.powerbot.game.bot.event.listener.PaintListener;
 import org.sudorunespan.SudoRunespan;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 
 /**
@@ -20,18 +22,25 @@ import java.text.DecimalFormat;
  * Time: 11:50 AM
  */
 
-public class Painter extends Strategy implements PaintListener {
+public class Painter extends Strategy implements PaintListener, MouseListener {
     private static final DecimalFormat df = new DecimalFormat("#.##");
-    private int startXp, startPoints, gainedPoints, startLvl;
-    private Timer timer;
-    private MouseTrail mouseTrail;
-    private FloatingWindow window;
+    private static Color color;
+    private final int startXp, startPoints, startLvl;
+    private final Timer timer;
+    private final MouseTrail mouseTrail;
+    private final FloatingWindow window;
+    private int gainedPoints;
+    private int colorIndex;
 
     public Painter() {
         startXp = Skills.getExperience(Skills.RUNECRAFTING);
         startLvl = Skills.getRealLevel(Skills.RUNECRAFTING);
         startPoints = Integer.parseInt(Widgets.get(1274, 2).getText());
         gainedPoints = 0;
+
+        color = Color.GREEN;
+        colorIndex = 0;
+
         timer = new Timer(0);
         mouseTrail = new MouseTrail();
         window = new FloatingWindow();
@@ -42,6 +51,32 @@ public class Painter extends Strategy implements PaintListener {
         return false;
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        colorIndex = (colorIndex+1)%3;
+        switch (colorIndex) {
+            case 0:
+                color = Color.GREEN;
+                break;
+
+            case 1:
+                color = Color.CYAN;
+                break;
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
     public void onRepaint(final Graphics g) {
         if (SudoRunespan.isNodeBlock()) {
             g.setColor(Color.RED);
@@ -50,28 +85,30 @@ public class Painter extends Strategy implements PaintListener {
             g.drawString("GETTING MORE RUNE ESS", 180, 130);
         }
 
-        final Tile tile = SudoRunespan.getTarget();
-        if (tile != null && tile.isOnScreen()) {
-            g.setColor(Color.RED);
-            g.drawPolygon(tile.getBounds()[0]);
-            g.setColor(new Color(255, 0, 0, 50));
-            g.fillPolygon(tile.getBounds()[0]);
-        }
+        if (colorIndex != 2) {
+            final Tile tile = SudoRunespan.getTarget();
+            if (tile != null && tile.isOnScreen()) {
+                g.setColor(Color.RED);
+                g.drawPolygon(tile.getBounds()[0]);
+                g.setColor(new Color(255, 0, 0, 50));
+                g.fillPolygon(tile.getBounds()[0]);
+            }
 
-        if (Widgets.get(1274).validate()) {
-            gainedPoints = Integer.parseInt(Widgets.get(1274, 2).getText()) - startPoints;
-        }
-        final int gainedXp = Skills.getExperience(Skills.RUNECRAFTING) - startXp;
+            if (Widgets.get(1274).validate()) {
+                gainedPoints = Integer.parseInt(Widgets.get(1274, 2).getText()) - startPoints;
+            }
+            final int gainedXp = Skills.getExperience(Skills.RUNECRAFTING) - startXp;
 
-        g.setColor(Color.GREEN);
-        window.draw(g, gainedXp, gainedPoints);
-        mouseTrail.add(Mouse.getLocation());
-        mouseTrail.draw(g);
-        drawMouse(g);
+            g.setColor(color);
+            window.draw(g, gainedXp, gainedPoints);
+            mouseTrail.add(Mouse.getLocation());
+            mouseTrail.draw(g);
+            drawMouse(g);
+        }
     }
 
     private static void drawMouse(final Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(color);
         g.drawOval(Mouse.getX()-5, Mouse.getY()-5, 11, 11);
         g.fillOval(Mouse.getX()-2, Mouse.getY()-2, 5, 5);
     }
@@ -97,7 +134,7 @@ public class Painter extends Strategy implements PaintListener {
 
             for (int i = index; i != (index == 0 ? SIZE-1 : index-1); i = (i+1)%SIZE) {
                 if (points[i] != null && points[(i+1)%SIZE] != null) {
-                    g.setColor(new Color(0, 255, 0, (int) alpha));
+                    g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) alpha));
                     g.drawLine(points[i].x, points[i].y, points[(i + 1) % SIZE].x, points[(i + 1) % SIZE].y);
                     alpha += ALPHA_STEP;
                 }
@@ -120,11 +157,11 @@ public class Painter extends Strategy implements PaintListener {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
 
-            g.setColor(new Color(0, 255, 0, 100));
+            g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100));
             g.drawRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
             g.drawLine(loc.x, loc.y+20, loc.x+size.width, loc.y+20);
 
-            g.setColor(Color.GREEN);
+            g.setColor(color);
             g.setFont(new Font("Monospaced", Font.BOLD, 10));
             g.drawString("-= SudoRunespan =-", loc.x+40, loc.y+15);
 
@@ -160,7 +197,7 @@ public class Painter extends Strategy implements PaintListener {
         }
 
         private String getProgressBar() {
-            final double perc = (1-getPercentNextLvl(Skills.RUNECRAFTING));
+            final double perc = (1-getPercentNextLvl());
             final int len = (int) (27 * perc);
             String s = "";
 
@@ -197,15 +234,15 @@ public class Painter extends Strategy implements PaintListener {
             return s;
         }
 
-        public double getPercentNextLvl(int skill) {
-            final int level = Skills.getLevel(skill);
+        public double getPercentNextLvl() {
+            final int level = Skills.getLevel(Skills.RUNECRAFTING);
 
             if (level == 99) {
                 return 100;
             }
 
             final double range = Skills.XP_TABLE[level+1] - Skills.XP_TABLE[level];
-            final double currentLvlExp = Skills.getExperienceToLevel(skill, level+1);
+            final double currentLvlExp = Skills.getExperienceToLevel(Skills.RUNECRAFTING, level+1);
             return (currentLvlExp/range);
         }
     }
