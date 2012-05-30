@@ -10,23 +10,23 @@ import java.util.ArrayList;
  */
 
 public enum Node {
-    CYCLONE         (70455, 1,  "Cyclone",          false),
-    MIND_STORM      (70456, 1,  "Mind storm",       false),
-    WATER_POOL      (70457, 5,  "Water pool",       false),
-    ROCK_FRAGMENT   (70458, 9,  "Rock fragment",    false),
-    VINE            (70460, 17, "Vine",             false),
-    FIREBALL        (70459, 14, "Fireball",         false),
-    FLESHY_GROWTH   (70461, 20, "Fleshy growth",    false),
-    FIRE_STORM      (70462, 27, "Fire storm",       false),
-    CHAOTIC_CLOUD   (70463, 35, "Chaotic cloud",    true),
-    NEBULA          (70464, 40, "Nebula",           true),
-    SHIFTER         (70465, 44, "Shifter",          true),
-    JUMPER          (70466, 54, "Jumper",           true),
-    SKULLS          (70467, 66, "Skulls",           true),
-    BLOOD_POOL      (70468, 77, "Blood pool",       true),
-    BLOODY_SKULLS   (70469, 83, "Bloody skulls",    true),
-    LIVING_SOUL     (70470, 90, "Living soul",      true),
-    UNDEAD_SOUL     (70471, 95, "Undead soul",      true);
+    CYCLONE(70455, 1, "Cyclone", false),
+    MIND_STORM(70456, 1, "Mind storm", false),
+    WATER_POOL(70457, 5, "Water pool", false),
+    ROCK_FRAGMENT(70458, 9, "Rock fragment", false),
+    VINE(70460, 17, "Vine", false),
+    FIREBALL(70459, 14, "Fireball", false),
+    FLESHY_GROWTH(70461, 20, "Fleshy growth", false),
+    FIRE_STORM(70462, 27, "Fire storm", false),
+    CHAOTIC_CLOUD(70463, 35, "Chaotic cloud", true),
+    NEBULA(70464, 40, "Nebula", true),
+    SHIFTER(70465, 44, "Shifter", true),
+    JUMPER(70466, 54, "Jumper", true),
+    SKULLS(70467, 66, "Skulls", true),
+    BLOOD_POOL(70468, 77, "Blood pool", true),
+    BLOODY_SKULLS(70469, 83, "Bloody skulls", true),
+    LIVING_SOUL(70470, 90, "Living soul", true),
+    UNDEAD_SOUL(70471, 95, "Undead soul", true);
 
     private final int id, lvl;
     private final String name;

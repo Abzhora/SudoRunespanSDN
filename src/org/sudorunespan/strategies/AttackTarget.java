@@ -26,7 +26,7 @@ public class AttackTarget extends AbstractStrategy {
     @Override
     protected boolean isValid() {
         synchronized (Methods.mouseLock) {
-            for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.INVENTORY); i++) {
+            for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.INVENTORY); i++) {
                 Tabs.INVENTORY.open();
                 Time.sleep(200);
             }

@@ -27,27 +27,23 @@ public class AntiBan extends AbstractStrategy {
 
     @Override
     public void process() {
-        switch (Random.nextInt(0, 20)) {
-            case 0: case 1:
-                Camera.setPitch(Random.nextInt(0, 100));
-                break;
+        final int num = Random.nextInt(0, 20);
 
-            case 2: case 3: case 4: case 5: case 6:
-                SceneObject o = SceneEntities.getNearest(new Filter<SceneObject>() {
-                    @Override
-                    public boolean accept(SceneObject sceneObject) {
-                        return Random.nextInt(0, 10) == 0;
-                    }
-                });
-
-                if (o != null) {
-                    Camera.turnTo(o);
+        if (num <= 1) {
+            Camera.setPitch(Random.nextInt(0, 100));
+        } else if (num <= 6) {
+            SceneObject o = SceneEntities.getNearest(new Filter<SceneObject>() {
+                @Override
+                public boolean accept(SceneObject sceneObject) {
+                    return Random.nextInt(0, 10) == 0;
                 }
-                break;
+            });
 
-            default:
-                Methods.wiggleMouse();
-                break;
+            if (o != null) {
+                Camera.turnTo(o);
+            }
+        } else {
+            Methods.wiggleMouse();
         }
     }
 }

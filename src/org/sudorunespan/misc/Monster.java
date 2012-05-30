@@ -10,22 +10,22 @@ import java.util.ArrayList;
  */
 
 public enum Monster {
-    AIR_ESSLING         (15403, 16571, 1,  "Air essling",       false),
-    MIND_ESSLING        (15404, 16571, 1,  "Mind essling",      false),
-    WATER_ESSLING       (15405, 16571, 5,  "Water essling",     false),
-    EARTH_ESSLING       (15406, 16571, 9,  "Earth essling",     false),
-    FIRE_ESSLING        (15407, 16571, 14, "Fire essling",      false),
+    AIR_ESSLING(15403, 16571, 1, "Air essling", false),
+    MIND_ESSLING(15404, 16571, 1, "Mind essling", false),
+    WATER_ESSLING(15405, 16571, 5, "Water essling", false),
+    EARTH_ESSLING(15406, 16571, 9, "Earth essling", false),
+    FIRE_ESSLING(15407, 16571, 14, "Fire essling", false),
 
-    BODY_ESSHOUND       (15408, 16661, 20, "Body esshound",     false),
-    COSMIC_ESSHOUND     (15409, 16661, 27, "Cosmic esshound",   true),
-    CHAOS_ESSHOUND      (15410, 16661, 35, "Chaos esshound",    true),
-    ASTRAL_ESSHOUND     (15411, 16661, 40, "Astral esshound",   true),
-    NATURE_ESSHOUND     (15412, 16661, 44, "Nature esshound",   true),
-    LAW_ESSHOUND        (15413, 16661, 54, "Law esshound",      true),
+    BODY_ESSHOUND(15408, 16661, 20, "Body esshound", false),
+    COSMIC_ESSHOUND(15409, 16661, 27, "Cosmic esshound", true),
+    CHAOS_ESSHOUND(15410, 16661, 35, "Chaos esshound", true),
+    ASTRAL_ESSHOUND(15411, 16661, 40, "Astral esshound", true),
+    NATURE_ESSHOUND(15412, 16661, 44, "Nature esshound", true),
+    LAW_ESSHOUND(15413, 16661, 54, "Law esshound", true),
 
-    DEATH_ESSWRAITH     (15414, 16641, 65, "Death esswraith",   true),
-    BLOOD_ESSWRAITH     (15415, 16641, 77, "Blood esswraith",   true),
-    SOUL_ESSWRAITH      (15416, 16641, 90, "Soul esswraith",    true);
+    DEATH_ESSWRAITH(15414, 16641, 65, "Death esswraith", true),
+    BLOOD_ESSWRAITH(15415, 16641, 77, "Blood esswraith", true),
+    SOUL_ESSWRAITH(15416, 16641, 90, "Soul esswraith", true);
 
 
     private final int id, deathAnimation, lvl;

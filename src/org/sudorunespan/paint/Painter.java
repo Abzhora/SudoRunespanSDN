@@ -11,8 +11,6 @@ import org.powerbot.game.bot.event.listener.PaintListener;
 import org.sudorunespan.SudoRunespan;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 
 /**
@@ -22,24 +20,19 @@ import java.text.DecimalFormat;
  * Time: 11:50 AM
  */
 
-public class Painter extends Strategy implements PaintListener, MouseListener {
+public class Painter extends Strategy implements PaintListener {
     private static final DecimalFormat df = new DecimalFormat("#.##");
-    private static Color color;
     private final int startXp, startPoints, startLvl;
     private final Timer timer;
     private final MouseTrail mouseTrail;
     private final FloatingWindow window;
     private int gainedPoints;
-    private int colorIndex;
 
     public Painter() {
         startXp = Skills.getExperience(Skills.RUNECRAFTING);
         startLvl = Skills.getRealLevel(Skills.RUNECRAFTING);
         startPoints = Integer.parseInt(Widgets.get(1274, 2).getText());
         gainedPoints = 0;
-
-        color = Color.GREEN;
-        colorIndex = 0;
 
         timer = new Timer(0);
         mouseTrail = new MouseTrail();
@@ -51,32 +44,6 @@ public class Painter extends Strategy implements PaintListener, MouseListener {
         return false;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        colorIndex = (colorIndex+1)%3;
-        switch (colorIndex) {
-            case 0:
-                color = Color.GREEN;
-                break;
-
-            case 1:
-                color = Color.CYAN;
-                break;
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
     public void onRepaint(final Graphics g) {
         if (SudoRunespan.isNodeBlock()) {
             g.setColor(Color.RED);
@@ -85,37 +52,35 @@ public class Painter extends Strategy implements PaintListener, MouseListener {
             g.drawString("GETTING MORE RUNE ESS", 180, 130);
         }
 
-        if (colorIndex != 2) {
-            final Tile tile = SudoRunespan.getTarget();
-            if (tile != null && tile.isOnScreen()) {
-                g.setColor(Color.RED);
-                g.drawPolygon(tile.getBounds()[0]);
-                g.setColor(new Color(255, 0, 0, 50));
-                g.fillPolygon(tile.getBounds()[0]);
-            }
-
-            if (Widgets.get(1274).validate()) {
-                gainedPoints = Integer.parseInt(Widgets.get(1274, 2).getText()) - startPoints;
-            }
-            final int gainedXp = Skills.getExperience(Skills.RUNECRAFTING) - startXp;
-
-            g.setColor(color);
-            window.draw(g, gainedXp, gainedPoints);
-            mouseTrail.add(Mouse.getLocation());
-            mouseTrail.draw(g);
-            drawMouse(g);
+        final Tile tile = SudoRunespan.getTarget();
+        if (tile != null && tile.isOnScreen()) {
+            g.setColor(Color.RED);
+            g.drawPolygon(tile.getBounds()[0]);
+            g.setColor(new Color(255, 0, 0, 50));
+            g.fillPolygon(tile.getBounds()[0]);
         }
+
+        if (Widgets.get(1274).validate()) {
+            gainedPoints = Integer.parseInt(Widgets.get(1274, 2).getText()) - startPoints;
+        }
+        final int gainedXp = Skills.getExperience(Skills.RUNECRAFTING) - startXp;
+
+        g.setColor(Color.GREEN);
+        window.draw(g, gainedXp, gainedPoints);
+        mouseTrail.add(Mouse.getLocation());
+        mouseTrail.draw(g);
+        drawMouse(g);
     }
 
     private static void drawMouse(final Graphics g) {
-        g.setColor(color);
-        g.drawOval(Mouse.getX()-5, Mouse.getY()-5, 11, 11);
-        g.fillOval(Mouse.getX()-2, Mouse.getY()-2, 5, 5);
+        g.setColor(Color.GREEN);
+        g.drawOval(Mouse.getX() - 5, Mouse.getY() - 5, 11, 11);
+        g.fillOval(Mouse.getX() - 2, Mouse.getY() - 2, 5, 5);
     }
 
     private final static class MouseTrail {
         private final int SIZE = 25;
-        private final double ALPHA_STEP = (255.0/SIZE);
+        private final double ALPHA_STEP = (255.0 / SIZE);
         private final Point[] points;
         private int index;
 
@@ -132,9 +97,9 @@ public class Painter extends Strategy implements PaintListener, MouseListener {
         public void draw(final Graphics g) {
             double alpha = 0;
 
-            for (int i = index; i != (index == 0 ? SIZE-1 : index-1); i = (i+1)%SIZE) {
-                if (points[i] != null && points[(i+1)%SIZE] != null) {
-                    g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) alpha));
+            for (int i = index; i != (index == 0 ? SIZE - 1 : index - 1); i = (i + 1) % SIZE) {
+                if (points[i] != null && points[(i + 1) % SIZE] != null) {
+                    g.setColor(new Color(0, 255, 0, (int) alpha));
                     g.drawLine(points[i].x, points[i].y, points[(i + 1) % SIZE].x, points[(i + 1) % SIZE].y);
                     alpha += ALPHA_STEP;
                 }
@@ -157,80 +122,80 @@ public class Painter extends Strategy implements PaintListener, MouseListener {
             g.setColor(new Color(0, 0, 0, 100));
             g.fillRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
 
-            g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100));
+            g.setColor(new Color(0, 255, 0, 100));
             g.drawRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
-            g.drawLine(loc.x, loc.y+20, loc.x+size.width, loc.y+20);
+            g.drawLine(loc.x, loc.y + 20, loc.x + size.width, loc.y + 20);
 
-            g.setColor(color);
+            g.setColor(Color.GREEN);
             g.setFont(new Font("Monospaced", Font.BOLD, 10));
-            g.drawString("-= SudoRunespan =-", loc.x+40, loc.y+15);
+            g.drawString("-= SudoRunespan =-", loc.x + 40, loc.y + 15);
 
             g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-            g.drawString("Time", loc.x+5, loc.y+41);
-            g.drawString(timer.toElapsedString(), loc.x+105, loc.y+41);
+            g.drawString("Time", loc.x + 5, loc.y + 41);
+            g.drawString(timer.toElapsedString(), loc.x + 105, loc.y + 41);
 
-            g.drawString("Exp Gained", loc.x+5, loc.y+51);
-            g.drawString(String.valueOf(xpGained), loc.x+105, loc.y+51);
+            g.drawString("Exp Gained", loc.x + 5, loc.y + 51);
+            g.drawString(String.valueOf(xpGained), loc.x + 105, loc.y + 51);
 
-            final double XPMS = xpGained * (1.0/timer.getElapsed());
-            g.drawString("Exp/h", loc.x+5, loc.y+61);
-            g.drawString(df.format(XPMS*3600000), loc.x+105, loc.y+61);
+            final double XPMS = xpGained * (1.0 / timer.getElapsed());
+            g.drawString("Exp/h", loc.x + 5, loc.y + 61);
+            g.drawString(df.format(XPMS * 3600000), loc.x + 105, loc.y + 61);
 
-            g.drawString("Points", loc.x+5, loc.y+71);
-            g.drawString(String.valueOf(pointsGained), loc.x+105, loc.y+71);
+            g.drawString("Points", loc.x + 5, loc.y + 71);
+            g.drawString(String.valueOf(pointsGained), loc.x + 105, loc.y + 71);
 
-            g.drawString("Points/h", loc.x+5, loc.y+81);
-            g.drawString(df.format(pointsGained *(3600000.0/timer.getElapsed())), loc.x+105, loc.y+81);
+            g.drawString("Points/h", loc.x + 5, loc.y + 81);
+            g.drawString(df.format(pointsGained * (3600000.0 / timer.getElapsed())), loc.x + 105, loc.y + 81);
 
             final int ETL = Skills.getExperienceToLevel(Skills.RUNECRAFTING, Skills.getRealLevel(Skills.RUNECRAFTING) + 1);
-            g.drawString("ETL:", loc.x+5, loc.y+91);
-            g.drawString("" + ETL, loc.x+105, loc.y+91);
+            g.drawString("ETL:", loc.x + 5, loc.y + 91);
+            g.drawString("" + ETL, loc.x + 105, loc.y + 91);
 
-            g.drawString("TTL:", loc.x+5, loc.y+101);
-            g.drawString("" + Time.format(XPMS > 0 ? (long) (ETL / XPMS) : 0), loc.x+105, loc.y+101);
+            g.drawString("TTL:", loc.x + 5, loc.y + 101);
+            g.drawString("" + Time.format(XPMS > 0 ? (long) (ETL / XPMS) : 0), loc.x + 105, loc.y + 101);
 
             final int curLevel = Skills.getRealLevel(Skills.RUNECRAFTING);
-            g.drawString("Level:", loc.x+5, loc.y+111);
-            g.drawString(curLevel + " (+" + (curLevel-startLvl) + ")", loc.x+105, loc.y+111);
+            g.drawString("Level:", loc.x + 5, loc.y + 111);
+            g.drawString(curLevel + " (+" + (curLevel - startLvl) + ")", loc.x + 105, loc.y + 111);
 
-            g.drawString(getProgressBar(), loc.x+5, loc.y+128);
+            g.drawString(getProgressBar(), loc.x + 5, loc.y + 128);
         }
 
         private String getProgressBar() {
-            final double perc = (1-getPercentNextLvl());
+            final double perc = (1 - getPercentNextLvl());
             final int len = (int) (27 * perc);
             String s = "";
 
-            for (int i=0; i<len-1; i++) {
-                s+=".";
+            for (int i = 0; i < len - 1; i++) {
+                s += ".";
             }
 
             switch (spinner) {
                 case 0:
-                    s+="-";
+                    s += "-";
                     break;
                 case 1:
-                    s+="\\";
+                    s += "\\";
                     break;
                 case 2:
-                    s+="|";
+                    s += "|";
                     break;
                 case 3:
-                    s+="/";
+                    s += "/";
                     break;
             }
 
-            for (int i=0; i<(28-len); i++) {
-                s+=" ";
+            for (int i = 0; i < (28 - len); i++) {
+                s += " ";
             }
 
             wait++;
             if (wait == MAX_WAIT) {
-                spinner = (spinner+1) % 4;
+                spinner = (spinner + 1) % 4;
                 wait = 0;
             }
 
-            s+= (int) (perc*100) + "%";
+            s += (int) (perc * 100) + "%";
             return s;
         }
 
@@ -241,9 +206,9 @@ public class Painter extends Strategy implements PaintListener, MouseListener {
                 return 100;
             }
 
-            final double range = Skills.XP_TABLE[level+1] - Skills.XP_TABLE[level];
-            final double currentLvlExp = Skills.getExperienceToLevel(Skills.RUNECRAFTING, level+1);
-            return (currentLvlExp/range);
+            final double range = Skills.XP_TABLE[level + 1] - Skills.XP_TABLE[level];
+            final double currentLvlExp = Skills.getExperienceToLevel(Skills.RUNECRAFTING, level + 1);
+            return (currentLvlExp / range);
         }
     }
 }

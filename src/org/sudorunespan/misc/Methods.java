@@ -19,9 +19,9 @@ import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.sudorunespan.SudoRunespan;
 
-import static org.powerbot.game.api.methods.Calculations.distanceTo;
-
 import java.awt.*;
+
+import static org.powerbot.game.api.methods.Calculations.distanceTo;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,10 +34,10 @@ public final class Methods {
     public final static Object mouseLock = new Object();
     private static final int[] MEMBERS_WORLDS =
             {2, 6, 9, 12, 18, 22, 23, 24, 27, 28, 31, 36, 39, 40, 42, 44, 45, 46, 48, 53,
-            54, 56, 58, 59, 60, 64, 65, 66, 69, 70, 71, 76, 77, 78, 79, 82,
-            83, 84, 88, 89, 91, 92, 97, 98, 99, 100, 103, 104, 110, 111, 112,
-            114, 115, 116, 121, 124, 129, 130, 131, 132, 137, 138, 143, 144, 145,
-            151, 157, 158, 159, 160, 162};
+                    54, 56, 58, 59, 60, 64, 65, 66, 69, 70, 71, 76, 77, 78, 79, 82,
+                    83, 84, 88, 89, 91, 92, 97, 98, 99, 100, 103, 104, 110, 111, 112,
+                    114, 115, 116, 121, 124, 129, 130, 131, 132, 137, 138, 143, 144, 145,
+                    151, 157, 158, 159, 160, 162};
 
 
     public static void interact(Entity entity, final Tile loc, final String action, final String option) {
@@ -94,7 +94,7 @@ public final class Methods {
 
             if (bestNode == null || tempNode.ordinal() > bestNodeValue.ordinal() ||
                     (tempNode.ordinal() == bestNodeValue.ordinal() &&
-                    distanceTo(object.getLocation()) < distanceTo(bestNode.getLocation()))) {
+                            distanceTo(object.getLocation()) < distanceTo(bestNode.getLocation()))) {
                 bestNode = object;
                 bestNodeValue = tempNode;
             }
@@ -126,7 +126,7 @@ public final class Methods {
 
             if (bestMonster == null || tempMonster.ordinal() > bestMonsterValue.ordinal() ||
                     (tempMonster.ordinal() == bestMonsterValue.ordinal() &&
-                     distanceTo(npc.getLocation()) < distanceTo(bestMonster.getLocation()))) {
+                            distanceTo(npc.getLocation()) < distanceTo(bestMonster.getLocation()))) {
                 bestMonster = npc;
                 bestMonsterValue = tempMonster;
             }
@@ -172,10 +172,10 @@ public final class Methods {
             return true;
         }
 
-        final int xDiv = (t2.getX()-t1.getX()), yDiv = (t2.getY()-t1.getY());
+        final int xDiv = (t2.getX() - t1.getX()), yDiv = (t2.getY() - t1.getY());
         final double orient = Players.getLocal().getOrientation();
-        final double angle = (Math.toDegrees(Math.atan2(yDiv, xDiv))+360)%360;
-        return Math.abs(angle-orient) < 5;   //small deviation when converting radians to and from degrees
+        final double angle = (Math.toDegrees(Math.atan2(yDiv, xDiv)) + 360) % 360;
+        return Math.abs(angle - orient) < 5;   //small deviation when converting radians to and from degrees
     }
 
     public static boolean isMembersWorld(final int world) {

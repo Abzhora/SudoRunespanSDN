@@ -8,7 +8,9 @@ import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Tile;
 import org.sudorunespan.misc.Methods;
 import org.sudorunespan.paint.Painter;
-import org.sudorunespan.strategies.*;
+import org.sudorunespan.strategies.AntiBan;
+import org.sudorunespan.strategies.AttackTarget;
+import org.sudorunespan.strategies.GetFreeRuneEss;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +47,7 @@ public class SudoRunespan extends ActiveScript {
 
     private static void loadWorldData() {
         synchronized (Methods.mouseLock) {
-            for (int i=0; i<10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
+            for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
                 Tabs.FRIENDS.open();
                 Time.sleep(200);
             }

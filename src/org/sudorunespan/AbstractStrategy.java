@@ -32,6 +32,7 @@ public abstract class AbstractStrategy extends Strategy implements Task {
     }
 
     protected abstract boolean isValid();
+
     protected abstract void process();
 
     protected final void error(final String s) {
@@ -42,7 +43,7 @@ public abstract class AbstractStrategy extends Strategy implements Task {
             }
         });
 
-        while(Game.isLoggedIn()) {
+        while (Game.isLoggedIn()) {
             Game.logout(true);
         }
         context.stop();
