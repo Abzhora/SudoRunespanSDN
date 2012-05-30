@@ -19,3 +19,4 @@ Change Log:
     2.01   Improved paint
     2.02   Made members testing bug free
     2.03   Misc improvements, paint changes color on mouse click
+    2.04   Added world 40 to mems list, color only changes when clicking on the menu, else hides
