@@ -85,5 +85,6 @@ public class AttackTarget extends AbstractStrategy {
     protected void process() {
         Methods.interact(entity, SudoRunespan.getTarget(), "Siphon",
                 Methods.getTargetName(entity));
+        Time.sleep(800);
     }
 }

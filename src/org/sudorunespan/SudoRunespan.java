@@ -19,7 +19,7 @@ import org.sudorunespan.strategies.GetFreeRuneEss;
  * Time: 11:30 AM
  */
 
-@Manifest(name = "SudoRunespan", version = 2.04, description = "The best Runespan bot SDN version! V2.04",
+@Manifest(name = "SudoRunespan", version = 2.04, description = "The best Runespan bot SDN version!",
         authors = {"Deprecated"}, website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
 public class SudoRunespan extends ActiveScript {
     private static boolean nodeBlock;

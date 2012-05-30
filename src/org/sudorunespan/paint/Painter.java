@@ -127,10 +127,10 @@ public class Painter extends Strategy implements PaintListener {
             g.drawLine(loc.x, loc.y + 20, loc.x + size.width, loc.y + 20);
 
             g.setColor(Color.GREEN);
-            g.setFont(new Font("Monospaced", Font.BOLD, 10));
+            g.setFont(new Font("Tahoma", Font.BOLD, 10));
             g.drawString("-= SudoRunespan =-", loc.x + 40, loc.y + 15);
 
-            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+            g.setFont(new Font("Tahoma", Font.PLAIN, 10));
             g.drawString("Time", loc.x + 5, loc.y + 41);
             g.drawString(timer.toElapsedString(), loc.x + 105, loc.y + 41);
 
@@ -158,6 +158,7 @@ public class Painter extends Strategy implements PaintListener {
             g.drawString("Level:", loc.x + 5, loc.y + 111);
             g.drawString(curLevel + " (+" + (curLevel - startLvl) + ")", loc.x + 105, loc.y + 111);
 
+            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
             g.drawString(getProgressBar(), loc.x + 5, loc.y + 128);
         }
 
