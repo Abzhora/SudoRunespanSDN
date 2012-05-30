@@ -107,7 +107,7 @@ public final class Methods {
         final NPC[] realNpcs = NPCs.getLoaded(new Filter<NPC>() {
             @Override
             public boolean accept(final NPC npc) {
-                for (Monster monster : Monster.getValues(isMembersWorld(getCurrentWorld()))) {
+                for (Monster monster : Monster.getValues(SudoRunespan.isMembers())) {
                     if (monster.getId() == npc.getId() && rcLvl >= monster.getLvl()
                             && npc.getAnimation() != monster.getDeathAnimation()) {
                         return npc.getLocation().canReach();
