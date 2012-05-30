@@ -33,12 +33,11 @@ import static org.powerbot.game.api.methods.Calculations.distanceTo;
 public final class Methods {
     public final static Object mouseLock = new Object();
     private static final int[] MEMBERS_WORLDS =
-            {2, 6, 9, 12, 18, 22, 23, 24, 27, 28, 31, 36, 39, 40, 42, 44, 45, 46, 48, 53,
-                    54, 56, 58, 59, 60, 64, 65, 66, 69, 70, 71, 76, 77, 78, 79, 82,
-                    83, 84, 88, 89, 91, 92, 97, 98, 99, 100, 103, 104, 110, 111, 112,
-                    114, 115, 116, 121, 124, 129, 130, 131, 132, 137, 138, 143, 144, 145,
-                    151, 157, 158, 159, 160, 162};
-
+            {2, 5, 6, 9, 12, 15, 18, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32,
+            36, 39, 40, 42, 44, 45, 46, 48, 49, 51, 52, 53, 54, 56, 58, 59,
+            60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77,
+            78, 79, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 96, 97, 99, 100,
+            103, 104, 105, 114, 115, 116, 117, 119, 123, 124, 137, 138, 139};
 
     public static void interact(Entity entity, final Tile loc, final String action, final String option) {
         if (entity.getBounds().length == 1) {
