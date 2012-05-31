@@ -193,7 +193,7 @@ public final class Methods {
             return Integer.parseInt(desc[2]);
         }
 
-        return -1;
+        return 0;
     }
 
     public static boolean validate(final Tile tile, final int id) {
