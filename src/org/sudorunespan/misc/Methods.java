@@ -34,10 +34,10 @@ public final class Methods {
     public final static Object mouseLock = new Object();
     private static final int[] MEMBERS_WORLDS =
             {2, 5, 6, 9, 12, 15, 18, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32,
-            36, 39, 40, 42, 44, 45, 46, 48, 49, 51, 52, 53, 54, 56, 58, 59,
-            60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77,
-            78, 79, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 96, 97, 99, 100,
-            103, 104, 105, 114, 115, 116, 117, 119, 123, 124, 137, 138, 139};
+                    36, 39, 40, 42, 44, 45, 46, 48, 49, 51, 52, 53, 54, 56, 58, 59,
+                    60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77,
+                    78, 79, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 96, 97, 99, 100,
+                    103, 104, 105, 114, 115, 116, 117, 119, 123, 124, 137, 138, 139};
 
     public static void interact(Entity entity, final Tile loc, final String action, final String option) {
         if (entity.getBounds().length == 1) {
@@ -56,7 +56,9 @@ public final class Methods {
             synchronized (mouseLock) {
                 entity.hover();
                 entity.hover();
-                entity.interact(action, option);
+                if (!entity.interact(action, option)) {
+                    Walking.findPath(loc).traverse();
+                }
             }
 
             wiggleMouse();
@@ -197,22 +199,27 @@ public final class Methods {
     }
 
     public static boolean validate(final Tile tile, final int id) {
-        if (tile == null || id == -1 || !tile.canReach()) {
-            return false;
-        }
+        return (tile == null || id == -1 || !tile.canReach()) &&
+                (validateSceneObjects(tile, id) || validateNPCs(tile, id));
+    }
 
-        final SceneObject obj = SceneEntities.getAt(tile);
-        if (obj != null && obj.getId() == id) {
-            return true;
-        }
+    private static boolean validateSceneObjects(final Tile tile, final int id) {
+        final SceneObject obj = SceneEntities.getNearest(new Filter<SceneObject>() {
+            @Override
+            public boolean accept(final SceneObject sceneObject) {
+                return (sceneObject.getId() == id && sceneObject.getLocation().equals(tile));
+            }
+        });
+        return obj != null;
+    }
 
+    private static boolean validateNPCs(final Tile tile, final int id) {
         final NPC npc = NPCs.getNearest(new Filter<NPC>() {
             @Override
             public boolean accept(NPC npc) {
                 return npc.getId() == id && npc.getLocation().equals(tile);
             }
         });
-
         return npc != null;
     }
 }
