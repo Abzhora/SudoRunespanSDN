@@ -19,7 +19,7 @@ import org.sudorunespan.misc.Methods;
  * Time: 2:32 PM
  */
 
-public class AttackTarget extends AbstractStrategy {
+public final class AttackTarget extends AbstractStrategy {
     private static final int RUNE_ESS_ID = 24227;
     private Entity entity;
 

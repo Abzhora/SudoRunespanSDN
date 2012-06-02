@@ -15,7 +15,7 @@ import org.sudorunespan.misc.Methods;
  * Time: 11:42 AM
  */
 
-public class GetFreeRuneEss extends AbstractStrategy {
+public final class GetFreeRuneEss extends AbstractStrategy {
     private static final int RUNE_ESS_ID = 24227;
     private static final int FLOATING_ESS_ID = 15402;
     private int failCheck = 0;

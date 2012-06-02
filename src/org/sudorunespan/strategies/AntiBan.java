@@ -15,7 +15,7 @@ import org.sudorunespan.misc.Methods;
  * Time: 11:58 AM
  */
 
-public class AntiBan extends AbstractStrategy {
+public final class AntiBan extends AbstractStrategy {
     public AntiBan() {
         setLock(false);
     }

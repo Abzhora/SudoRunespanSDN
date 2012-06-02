@@ -20,7 +20,7 @@ import java.text.DecimalFormat;
  * Time: 11:50 AM
  */
 
-public class Painter extends Strategy implements PaintListener {
+public final class Painter extends Strategy implements PaintListener {
     private static final DecimalFormat df = new DecimalFormat("#.##");
     private final int startXp, startPoints, startLvl;
     private final Timer timer;

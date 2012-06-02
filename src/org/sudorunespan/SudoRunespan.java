@@ -21,7 +21,7 @@ import org.sudorunespan.strategies.GetFreeRuneEss;
 
 @Manifest(name = "SudoRunespan", version = 2.04, description = "The best Runespan bot SDN version!",
         authors = {"Deprecated"}, website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
-public class SudoRunespan extends ActiveScript {
+public final class SudoRunespan extends ActiveScript {
     private static boolean nodeBlock;
     private static Tile target;
     private static final Object targetAccessLock = new Object();
