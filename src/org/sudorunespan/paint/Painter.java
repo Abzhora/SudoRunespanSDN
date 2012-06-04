@@ -108,10 +108,8 @@ public final class Painter extends Strategy implements PaintListener {
     }
 
     private class FloatingWindow {
-        private static final int MAX_WAIT = 5;
         private final Point loc;
         private final Dimension size;
-        private int spinner = 0, wait = 0;
 
         public FloatingWindow() {
             loc = new Point(10, 180);
@@ -164,39 +162,20 @@ public final class Painter extends Strategy implements PaintListener {
 
         private String getProgressBar() {
             final double perc = (1 - getPercentNextLvl());
-            final int len = (int) (27 * perc);
-            String s = "";
+            final int len = (int) (25 * perc);
+            String s = "[";
 
             for (int i = 0; i < len - 1; i++) {
-                s += ".";
+                s += "=";
             }
 
-            switch (spinner) {
-                case 0:
-                    s += "-";
-                    break;
-                case 1:
-                    s += "\\";
-                    break;
-                case 2:
-                    s += "|";
-                    break;
-                case 3:
-                    s += "/";
-                    break;
-            }
+            s += ">";
 
-            for (int i = 0; i < (28 - len); i++) {
+            for (int i = 0; i < (26 - len); i++) {
                 s += " ";
             }
 
-            wait++;
-            if (wait == MAX_WAIT) {
-                spinner = (spinner + 1) % 4;
-                wait = 0;
-            }
-
-            s += (int) (perc * 100) + "%";
+            s += "] " + (int) (perc * 100) + "%";
             return s;
         }
 
