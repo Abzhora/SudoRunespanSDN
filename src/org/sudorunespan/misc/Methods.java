@@ -199,7 +199,7 @@ public final class Methods {
     }
 
     public static boolean validate(final Tile tile, final int id) {
-        return (tile == null || id == -1 || !tile.canReach()) &&
+        return (tile != null && id != -1 && tile.canReach()) &&
                 (validateSceneObjects(tile, id) || validateNPCs(tile, id));
     }
 
