@@ -12,6 +12,9 @@ import org.sudorunespan.strategies.AntiBan;
 import org.sudorunespan.strategies.AttackTarget;
 import org.sudorunespan.strategies.GetFreeRuneEss;
 
+import javax.swing.*;
+import java.util.logging.Level;
+
 /**
  * Created with IntelliJ IDEA.
  * User: deprecated
@@ -33,6 +36,7 @@ public final class SudoRunespan extends ActiveScript {
 
         provide(new Painter());
         submit(new Setup());
+        submit(new Advertisement());
         provide(new AntiBan());
         provide(new GetFreeRuneEss());
         provide(new AttackTarget());
@@ -42,6 +46,19 @@ public final class SudoRunespan extends ActiveScript {
         @Override
         public void run() {
             loadWorldData();
+        }
+    }
+
+    private final class Advertisement implements Task {
+        @Override
+        public void run() {
+            log.log(Level.SEVERE, "Find more information about Ping Dicing at: http://pdice.org/forums/forum.php");
+
+            JOptionPane.showMessageDialog(null,
+                    "Come dice with us here at Ping Dicing!!\n\n" +
+                            "IRC:  irc.swiftirc.net // #pdice\n" +
+                            "Friends Chat:  Ping",
+                    "-= Shameless Advertising =-", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
