@@ -32,8 +32,9 @@ public final class AttackTarget extends AbstractStrategy {
             }
         }
 
-        if (!Methods.validate(SudoRunespan.getTarget(), SudoRunespan.getCurrentId()) ||
-                Players.getLocal().getAnimation() == -1 || !Methods.isOrientedTowards(SudoRunespan.getTarget())) {
+        if (!Methods.validate(SudoRunespan.getTarget()) ||
+                Players.getLocal().getAnimation() == -1 ||
+                !Methods.isOrientedTowards(SudoRunespan.getTarget())) {
             SudoRunespan.setTarget(null);
             SudoRunespan.setCurrentId(-1);
         }
@@ -48,7 +49,7 @@ public final class AttackTarget extends AbstractStrategy {
 
                 if (node != null) {
                     if (node.getId() != SudoRunespan.getCurrentId()) {
-                        SudoRunespan.setTarget(node.getLocation());
+                        SudoRunespan.setTarget(node);
                         SudoRunespan.setCurrentId(node.getId());
                         entity = node;
                         return true;
@@ -59,31 +60,33 @@ public final class AttackTarget extends AbstractStrategy {
             }
         }
 
-        if (SudoRunespan.isNodeBlock() && runeEss != null && runeEss.getStackSize() > 500) {
+        if (SudoRunespan.isNodeBlock() && runeEss != null && runeEss.getStackSize() > 200) {
             SudoRunespan.setNodeBlock(false);
         }
 
-        final NPC monster = Methods.getBestReachableMonster();
+        final NPC monster = Methods.getBestReachableMonster(SudoRunespan.isNodeBlock());
 
         if (monster != null) {
-            if (monster.getId() != SudoRunespan.getCurrentId()) {
-                SudoRunespan.setTarget(monster.getLocation());
+            if (monster.getId() != SudoRunespan.getCurrentId() &&
+                    (!SudoRunespan.isNodeBlock() || SudoRunespan.getCurrentId() == -1)) {
+                SudoRunespan.setTarget(monster);
                 SudoRunespan.setCurrentId(monster.getId());
                 entity = monster;
                 return true;
             } else {
                 return false;
             }
+        } else {
+            SudoRunespan.setTarget(null);
+            SudoRunespan.setCurrentId(-1);
         }
 
-        SudoRunespan.setTarget(null);
-        SudoRunespan.setCurrentId(-1);
         return false;
     }
 
     @Override
     protected void process() {
-        Methods.interact(entity, SudoRunespan.getTarget(), "Siphon",
+        Methods.interact(entity, SudoRunespan.getTarget().getLocation(), "Siphon",
                 Methods.getTargetName(entity));
         Time.sleep(800);
     }

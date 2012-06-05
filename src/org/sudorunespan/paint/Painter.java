@@ -6,7 +6,7 @@ import org.powerbot.game.api.methods.input.Mouse;
 import org.powerbot.game.api.methods.tab.Skills;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.util.Timer;
-import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.event.listener.PaintListener;
 import org.sudorunespan.SudoRunespan;
 
@@ -52,12 +52,12 @@ public final class Painter extends Strategy implements PaintListener {
             g.drawString("GETTING MORE RUNE ESS", 180, 130);
         }
 
-        final Tile tile = SudoRunespan.getTarget();
-        if (tile != null && tile.isOnScreen()) {
+        final Locatable target = SudoRunespan.getTarget();
+        if (target != null && target.getLocation().isOnScreen()) {
             g.setColor(Color.RED);
-            g.drawPolygon(tile.getBounds()[0]);
+            g.drawPolygon(target.getLocation().getBounds()[0]);
             g.setColor(new Color(255, 0, 0, 50));
-            g.fillPolygon(tile.getBounds()[0]);
+            g.fillPolygon(target.getLocation().getBounds()[0]);
         }
 
         if (Widgets.get(1274).validate()) {

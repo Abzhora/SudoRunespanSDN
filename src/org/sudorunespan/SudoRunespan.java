@@ -5,7 +5,7 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.util.Time;
-import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.sudorunespan.misc.Methods;
 import org.sudorunespan.paint.Painter;
 import org.sudorunespan.strategies.AntiBan;
@@ -19,11 +19,11 @@ import org.sudorunespan.strategies.GetFreeRuneEss;
  * Time: 11:30 AM
  */
 
-@Manifest(name = "SudoRunespan", version = 2.05, description = "The best Runespan bot SDN version!",
+@Manifest(name = "SudoRunespan", version = 2.06, description = "The best Runespan bot SDN version!",
         authors = {"Deprecated"}, website = "http://www.powerbot.org/community/topic/688861-deprecateds-sudorunespan-80k-xph/")
 public final class SudoRunespan extends ActiveScript {
     private static boolean nodeBlock;
-    private static Tile target;
+    private static Locatable target;
     private static final Object targetAccessLock = new Object();
     private static int currentId, world;
 
@@ -80,13 +80,13 @@ public final class SudoRunespan extends ActiveScript {
         SudoRunespan.nodeBlock = nodeBlock;
     }
 
-    public static void setTarget(final Tile target) {
+    public static void setTarget(final Locatable target) {
         synchronized (targetAccessLock) {
             SudoRunespan.target = target;
         }
     }
 
-    public static Tile getTarget() {
+    public static Locatable getTarget() {
         synchronized (targetAccessLock) {
             return target;
         }

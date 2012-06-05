@@ -13,6 +13,7 @@ import org.powerbot.game.api.util.Filter;
 import org.powerbot.game.api.util.Random;
 import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Entity;
+import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
 import org.powerbot.game.api.wrappers.node.SceneObject;
@@ -44,26 +45,26 @@ public final class Methods {
             entity = loc;
         }
 
-        if (!Calculations.isOnScreen(entity.getCentralPoint()) || Calculations.distanceTo(loc) > 5) {
-            if (!Players.getLocal().isMoving()) {
-                synchronized (mouseLock) {
-                    Walking.findPath(loc.derive(Random.nextInt(-1, 2), Random.nextInt(-1, 2))).traverse();
-                }
+        if (!Calculations.isOnScreen(entity.getCentralPoint())) {
+            synchronized (mouseLock) {
+                final Tile randTile = new Tile(loc.getX(), loc.getY(), loc.getPlane());
+                randTile.derive(Random.nextInt(-1, 2), Random.nextInt(-1, 2));
+                Walking.findPath(randTile.canReach() ? randTile : loc).traverse();
             }
 
             Camera.turnTo(loc.derive(Random.nextInt(-2, 5), Random.nextInt(-2, 5)));
         } else {
             synchronized (mouseLock) {
-                entity.hover();
-                entity.hover();
                 if (!entity.interact(action, option)) {
                     Walking.findPath(loc).traverse();
                 }
             }
 
             wiggleMouse();
-            Time.sleep(Random.nextInt(1500, 2000));
+            Time.sleep(Random.nextInt(1000, 1500));
         }
+
+        Time.sleep(Random.nextInt(200, 500));
     }
 
     public static void wiggleMouse() {
@@ -104,7 +105,7 @@ public final class Methods {
         return bestNode;
     }
 
-    public static NPC getBestReachableMonster() {
+    public static NPC getBestReachableMonster(final boolean nodeBlocking) {
         final int rcLvl = Skills.getLevel(Skills.RUNECRAFTING);
         final NPC[] realNpcs = NPCs.getLoaded(new Filter<NPC>() {
             @Override
@@ -125,7 +126,8 @@ public final class Methods {
         for (NPC npc : realNpcs) {
             final Monster tempMonster = Monster.getMonster(npc.getId());
 
-            if (bestMonster == null || tempMonster.ordinal() > bestMonsterValue.ordinal() ||
+            if (bestMonster == null || (nodeBlocking ? tempMonster.ordinal() < bestMonsterValue.ordinal() :
+                    tempMonster.ordinal() > bestMonsterValue.ordinal()) ||
                     (tempMonster.ordinal() == bestMonsterValue.ordinal() &&
                             distanceTo(npc.getLocation()) < distanceTo(bestMonster.getLocation()))) {
                 bestMonster = npc;
@@ -163,12 +165,12 @@ public final class Methods {
         return Node.getNode(scnObj.getId()).getName();
     }
 
-    public static boolean isOrientedTowards(final Tile t2) {
-        if (t2 == null) {
+    public static boolean isOrientedTowards(final Locatable locatable) {
+        if (locatable == null) {
             return false;
         }
 
-        final Tile t1 = Players.getLocal().getLocation();
+        final Tile t1 = Players.getLocal().getLocation(), t2 = locatable.getLocation();
         if (t1.equals(t2)) {
             return true;
         }
@@ -198,28 +200,16 @@ public final class Methods {
         return 0;
     }
 
-    public static boolean validate(final Tile tile, final int id) {
-        return (tile != null && id != -1 && tile.canReach()) &&
-                (validateSceneObjects(tile, id) || validateNPCs(tile, id));
+    public static boolean validate(final Locatable loc) {
+        return (loc != null && loc.getLocation().canReach()) &&
+                (validateSceneObjects(loc) || validateNPCs(loc));
     }
 
-    private static boolean validateSceneObjects(final Tile tile, final int id) {
-        final SceneObject obj = SceneEntities.getNearest(new Filter<SceneObject>() {
-            @Override
-            public boolean accept(final SceneObject sceneObject) {
-                return (sceneObject.getId() == id && sceneObject.getLocation().equals(tile));
-            }
-        });
-        return obj != null;
+    private static boolean validateSceneObjects(final Locatable loc) {
+        return (loc instanceof SceneObject) && ((SceneObject) loc).validate();
     }
 
-    private static boolean validateNPCs(final Tile tile, final int id) {
-        final NPC npc = NPCs.getNearest(new Filter<NPC>() {
-            @Override
-            public boolean accept(NPC npc) {
-                return npc.getId() == id && npc.getLocation().equals(tile);
-            }
-        });
-        return npc != null;
+    private static boolean validateNPCs(final Locatable loc) {
+        return (loc instanceof NPC) && ((NPC) loc).validate();
     }
 }
