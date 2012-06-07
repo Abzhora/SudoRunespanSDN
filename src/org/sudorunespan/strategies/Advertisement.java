@@ -1,6 +1,7 @@
 package org.sudorunespan.strategies;
 
 import org.powerbot.concurrent.Task;
+import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
@@ -22,6 +23,10 @@ import java.awt.event.ActionListener;
 
 public final class Advertisement implements Task {
     private final Object lock = new Object();
+
+    public Advertisement(final ActiveScript ctx) {
+        ctx.submit(this);
+    }
 
     @Override
     public final void run() {

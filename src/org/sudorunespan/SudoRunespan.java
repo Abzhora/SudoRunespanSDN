@@ -29,9 +29,9 @@ public final class SudoRunespan extends ActiveScript {
     @Override
     protected void setup() {
         AbstractStrategy.setContext(this);
+        ad = new Advertisement(this);
 
         provide(new Painter());
-        submit(ad = new Advertisement());
         provide(new AntiBan());
         provide(new GetFreeRuneEss());
         provide(new AttackTarget());
