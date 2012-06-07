@@ -19,3 +19,4 @@ Change Log:
     2.04   Fixed members list, removed paint color changing
     2.05   Misc interaction improvements
     2.06   Reversed monster search when nod blocking, doesn't change monster when node blocking, misc changes
+    2.07   Improved walking, added new antiban method

@@ -16,11 +16,14 @@ import org.powerbot.game.api.wrappers.Entity;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.api.wrappers.Tile;
 import org.powerbot.game.api.wrappers.interactive.NPC;
+import org.powerbot.game.api.wrappers.map.LocalPath;
+import org.powerbot.game.api.wrappers.map.TilePath;
 import org.powerbot.game.api.wrappers.node.SceneObject;
 import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.sudorunespan.SudoRunespan;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import static org.powerbot.game.api.methods.Calculations.distanceTo;
 
@@ -49,14 +52,20 @@ public final class Methods {
             synchronized (mouseLock) {
                 final Tile randTile = new Tile(loc.getX(), loc.getY(), loc.getPlane());
                 randTile.derive(Random.nextInt(-1, 2), Random.nextInt(-1, 2));
-                Walking.findPath(randTile.canReach() ? randTile : loc).traverse();
+                final LocalPath localPath = Walking.findPath(randTile.canReach() ? randTile : loc);
+                localPath.getNext();
+                final Tile[] tilePath = truncatePath(localPath.getTilePath().toArray(), 3);
+                (new TilePath(tilePath)).traverse();
             }
 
             Camera.turnTo(loc.derive(Random.nextInt(-2, 5), Random.nextInt(-2, 5)));
         } else {
             synchronized (mouseLock) {
                 if (!entity.interact(action, option)) {
-                    Walking.findPath(loc).traverse();
+                    final LocalPath localPath = Walking.findPath(loc);
+                    localPath.getNext();
+                    final Tile[] tilePath = truncatePath(localPath.getTilePath().toArray(), 3);
+                    (new TilePath(tilePath)).traverse();
                 }
             }
 
@@ -72,6 +81,10 @@ public final class Methods {
             final Point p = Mouse.getLocation();
             Mouse.move(new Point(Random.nextInt(-50, 50) + p.x, Random.nextInt(-50, 50) + p.y));
         }
+    }
+
+    private static Tile[] truncatePath(final Tile[] array, final int loss) {
+        return Arrays.copyOf(array, (array.length > loss ? array.length - loss : array.length));
     }
 
     public static SceneObject getBestReachableNode() {

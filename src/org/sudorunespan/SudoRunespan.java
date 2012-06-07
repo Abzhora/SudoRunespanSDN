@@ -1,19 +1,14 @@
 package org.sudorunespan;
 
-import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
-import org.powerbot.game.api.methods.Tabs;
-import org.powerbot.game.api.util.Time;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.sudorunespan.misc.Methods;
 import org.sudorunespan.paint.Painter;
+import org.sudorunespan.strategies.Advertisement;
 import org.sudorunespan.strategies.AntiBan;
 import org.sudorunespan.strategies.AttackTarget;
 import org.sudorunespan.strategies.GetFreeRuneEss;
-
-import javax.swing.*;
-import java.util.logging.Level;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,53 +24,22 @@ public final class SudoRunespan extends ActiveScript {
     private static Locatable target;
     private static final Object targetAccessLock = new Object();
     private static int currentId, world;
+    private static Advertisement ad;
 
     @Override
     protected void setup() {
         AbstractStrategy.setContext(this);
 
         provide(new Painter());
-        submit(new Setup());
-        submit(new Advertisement());
+        submit(ad = new Advertisement());
         provide(new AntiBan());
         provide(new GetFreeRuneEss());
         provide(new AttackTarget());
     }
 
-    private final class Setup implements Task {
-        @Override
-        public void run() {
-            loadWorldData();
-        }
-    }
-
-    private final class Advertisement implements Task {
-        @Override
-        public void run() {
-            log.log(Level.SEVERE, "Find more information about Ping Dicing at: http://pdice.org/forums/forum.php");
-
-            JOptionPane.showMessageDialog(null,
-                    "Come dice with us here at Ping Dicing!!\n\n" +
-                            "IRC:  irc.swiftirc.net // #pdice\n" +
-                            "Friends Chat:  Ping",
-                    "-= Shameless Advertising =-", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }
-
-    private static void loadWorldData() {
-        synchronized (Methods.mouseLock) {
-            for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.FRIENDS); i++) {
-                Tabs.FRIENDS.open();
-                Time.sleep(200);
-            }
-        }
-
-        world = Methods.getCurrentWorld();
-    }
-
     public static boolean isMembers() {
         if (world == 0) {
-            loadWorldData();
+            ad.loadWorldData();
         }
 
         return Methods.isMembersWorld(world);
@@ -107,5 +71,9 @@ public final class SudoRunespan extends ActiveScript {
         synchronized (targetAccessLock) {
             return target;
         }
+    }
+
+    public static void setWorld(int world) {
+        SudoRunespan.world = world;
     }
 }
