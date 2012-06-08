@@ -23,8 +23,10 @@ public final class GetFreeRuneEss extends AbstractStrategy {
     @Override
     public boolean isValid() {
         if (!Tabs.getCurrent().equals(Tabs.INVENTORY)) {
-            Tabs.INVENTORY.open();
-            return false;
+            synchronized (Methods.mouseLock) {
+                Tabs.INVENTORY.open();
+                return false;
+            }
         } else {
             return Inventory.getItem(RUNE_ESS_ID) == null;
         }

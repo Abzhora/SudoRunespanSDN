@@ -27,8 +27,10 @@ public final class AttackTarget extends AbstractStrategy {
     protected boolean isValid() {
         synchronized (Methods.mouseLock) {
             for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.INVENTORY); i++) {
-                Tabs.INVENTORY.open();
-                Time.sleep(200);
+                synchronized (Methods.mouseLock) {
+                    Tabs.INVENTORY.open();
+                    Time.sleep(200);
+                }
             }
         }
 

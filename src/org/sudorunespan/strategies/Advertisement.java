@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,7 +87,7 @@ public final class Advertisement implements Task {
                 }
             }
         };
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         final JPanel text = new JPanel();
         text.setLayout(new BoxLayout(text, BoxLayout.PAGE_AXIS));
@@ -124,6 +126,33 @@ public final class Advertisement implements Task {
         frame.add(text, BorderLayout.CENTER);
         frame.add(southPanel, BorderLayout.SOUTH);
         frame.pack();
+
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                checkBox.setSelected(false);
+                frame.dispose();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {}
+
+            @Override
+            public void windowIconified(WindowEvent e) {}
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+
+            @Override
+            public void windowActivated(WindowEvent e) {}
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
+
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
