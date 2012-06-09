@@ -10,7 +10,11 @@ import org.powerbot.game.api.wrappers.Locatable;
 import org.powerbot.game.bot.event.listener.PaintListener;
 import org.sudorunespan.SudoRunespan;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 
 /**
@@ -26,7 +30,9 @@ public final class Painter extends Strategy implements PaintListener {
     private final Timer timer;
     private final MouseTrail mouseTrail;
     private final FloatingWindow window;
+    private BufferedImage banner = null;
     private int gainedPoints;
+
 
     public Painter() {
         startXp = Skills.getExperience(Skills.RUNECRAFTING);
@@ -37,6 +43,7 @@ public final class Painter extends Strategy implements PaintListener {
         timer = new Timer(0);
         mouseTrail = new MouseTrail();
         window = new FloatingWindow();
+
     }
 
     @Override
@@ -70,6 +77,16 @@ public final class Painter extends Strategy implements PaintListener {
         mouseTrail.add(Mouse.getLocation());
         mouseTrail.draw(g);
         drawMouse(g);
+
+        if (banner != null) {
+            g.drawImage(banner, 216, 264, null);
+        } else {
+            try {
+                banner = ImageIO.read(new URL("http://i50.tinypic.com/2edtyeq.png").openStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void drawMouse(final Graphics g) {
