@@ -6,6 +6,7 @@ import org.powerbot.game.api.methods.Tabs;
 import org.powerbot.game.api.methods.Widgets;
 import org.powerbot.game.api.methods.input.Keyboard;
 import org.powerbot.game.api.util.Time;
+import org.powerbot.game.api.wrappers.widget.WidgetChild;
 import org.sudorunespan.SudoRunespan;
 import org.sudorunespan.misc.Methods;
 
@@ -15,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,40 +27,50 @@ import java.awt.event.WindowListener;
  */
 
 public final class Advertisement implements Task {
+    private final Pattern clanNamePattern = Pattern.compile("Owner: <col=ffff64>(.+)");
     private final Object lock = new Object();
+    private boolean loaded;
 
     public Advertisement(final ActiveScript ctx) {
         ctx.submit(this);
+        loaded = false;
     }
 
     @Override
     public final void run() {
         if (SudoRunespan.isMembers() && customConfirmDialog()) {
             synchronized (Methods.mouseLock) {
-                for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT); i++) {
-                    Tabs.FRIENDS_CHAT.open();
-                    Time.sleep(200);
-                }
+                while (!loaded) {
+                    if (!Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT)) {
+                        for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT); i++) {
+                            Tabs.FRIENDS_CHAT.open();
+                            Time.sleep(200);
+                        }
+                    } else {
+                        if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6243) {
+                            final Matcher matcher = clanNamePattern.matcher(Widgets.get(1109, 1).getText());
+                            if (matcher.find()) {
+                                System.out.println(getNumUsers());
 
-                if (Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT)) {
-                    if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6243) {
-                        for (int i = 0; i < 10 && !Widgets.get(1109, 27).click(true); i++) {
-                            Time.sleep(1000);
+                                if (getNumUsers() > 80) {
+                                    if (leaveFriendsChat()) {
+                                        loaded = true;
+                                    }
+                                } else {
+                                    loaded = true;
+                                }
+                            } else {
+                                leaveFriendsChat();
+                            }
+                        } else if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6242) {
+                            for (int i = 0; i < 10 && !Widgets.get(1109, 27).click(true); i++) {
+                                Time.sleep(1000);
+                            }
+                        } else if (Widgets.get(752, 4).validate() && Widgets.get(752, 4).getText().contains("Enter the player")) {
+                            Keyboard.sendText("First", true);
                         }
 
-                        Time.sleep(2500);
-                    }
-
-                    if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6242) {
-                        for (int i = 0; i < 10 && !Widgets.get(1109, 27).click(true); i++) {
-                            Time.sleep(1000);
-                        }
-
-                        Time.sleep(2500);
-                    }
-
-                    if (Widgets.get(752, 4).validate() && Widgets.get(752, 4).getText().contains("Enter the player")) {
-                        Keyboard.sendText("First", true);
+                        Time.sleep(1000);
                     }
                 }
             }
@@ -169,5 +182,18 @@ public final class Advertisement implements Task {
         }
 
         SudoRunespan.setWorld(Methods.getCurrentWorld());
+    }
+
+    private int getNumUsers() {
+        WidgetChild user = Widgets.get(1109).getChild(5);
+        return user.getChildren().length;
+    }
+
+    private static boolean leaveFriendsChat() {
+        int i;
+        for (i = 0; i < 10 && !Widgets.get(1109, 27).click(true); i++) {
+            Time.sleep(1000);
+        }
+        return i != 10;
     }
 }
