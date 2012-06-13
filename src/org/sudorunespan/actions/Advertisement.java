@@ -1,4 +1,4 @@
-package org.sudorunespan.strategies;
+package org.sudorunespan.actions;
 
 import org.powerbot.concurrent.Task;
 import org.powerbot.game.api.ActiveScript;

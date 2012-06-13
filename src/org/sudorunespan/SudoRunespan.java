@@ -4,11 +4,11 @@ import org.powerbot.game.api.ActiveScript;
 import org.powerbot.game.api.Manifest;
 import org.powerbot.game.api.wrappers.Locatable;
 import org.sudorunespan.misc.Methods;
-import org.sudorunespan.paint.Painter;
-import org.sudorunespan.strategies.Advertisement;
-import org.sudorunespan.strategies.AntiBan;
-import org.sudorunespan.strategies.AttackTarget;
-import org.sudorunespan.strategies.GetFreeRuneEss;
+import org.sudorunespan.userinterface.OverlayPaint;
+import org.sudorunespan.actions.Advertisement;
+import org.sudorunespan.actions.AntiBan;
+import org.sudorunespan.actions.AttackTarget;
+import org.sudorunespan.actions.GetFreeRuneEss;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +31,7 @@ public final class SudoRunespan extends ActiveScript {
         AbstractStrategy.setContext(this);
         ad = new Advertisement(this);
 
-        provide(new Painter());
+        provide(new OverlayPaint());
         provide(new AntiBan());
         provide(new GetFreeRuneEss());
         provide(new AttackTarget());

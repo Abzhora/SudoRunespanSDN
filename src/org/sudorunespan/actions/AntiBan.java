@@ -1,4 +1,4 @@
-package org.sudorunespan.strategies;
+package org.sudorunespan.actions;
 
 import org.powerbot.game.api.methods.node.SceneEntities;
 import org.powerbot.game.api.methods.widget.Camera;

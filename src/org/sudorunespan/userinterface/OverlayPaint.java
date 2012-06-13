@@ -1,4 +1,4 @@
-package org.sudorunespan.paint;
+package org.sudorunespan.userinterface;
 
 import org.powerbot.concurrent.strategy.Strategy;
 import org.powerbot.game.api.methods.Widgets;
@@ -24,8 +24,11 @@ import java.text.DecimalFormat;
  * Time: 11:50 AM
  */
 
-public final class Painter extends Strategy implements PaintListener {
+public final class OverlayPaint extends Strategy implements PaintListener {
     private static final DecimalFormat df = new DecimalFormat("#.##");
+    private static final Font nodeBlockFont = new Font(null, Font.BOLD, 20);
+    private static final Color alphaRed = new Color(255, 0, 0, 50);
+
     private final int startXp, startPoints, startLvl;
     private final Timer timer;
     private final MouseTrail mouseTrail;
@@ -34,7 +37,7 @@ public final class Painter extends Strategy implements PaintListener {
     private int gainedPoints;
 
 
-    public Painter() {
+    public OverlayPaint() {
         startXp = Skills.getExperience(Skills.RUNECRAFTING);
         startLvl = Skills.getRealLevel(Skills.RUNECRAFTING);
         startPoints = Integer.parseInt(Widgets.get(1274, 2).getText());
@@ -53,7 +56,7 @@ public final class Painter extends Strategy implements PaintListener {
     public void onRepaint(final Graphics g) {
         if (SudoRunespan.isNodeBlock()) {
             g.setColor(Color.RED);
-            g.setFont(new Font(null, Font.BOLD, 20));
+            g.setFont(nodeBlockFont);
             g.drawString("SCRIPT IS BLOCKING NODES", 171, 100);
             g.drawString("GETTING MORE RUNE ESS", 180, 130);
         }
@@ -62,7 +65,7 @@ public final class Painter extends Strategy implements PaintListener {
         if (target != null && target.getLocation().isOnScreen()) {
             g.setColor(Color.RED);
             g.drawPolygon(target.getLocation().getBounds()[0]);
-            g.setColor(new Color(255, 0, 0, 50));
+            g.setColor(alphaRed);
             g.fillPolygon(target.getLocation().getBounds()[0]);
         }
 
@@ -124,6 +127,12 @@ public final class Painter extends Strategy implements PaintListener {
     }
 
     private class FloatingWindow {
+        private final Color alphaGrey = new Color(0, 0, 0, 100);
+        private final Color alphaGreen = new Color(0, 255, 0, 100);
+        private final Font textBoldFont = new Font("Tahoma", Font.BOLD, 10);
+        private final Font textFont = new Font("Tahoma", Font.PLAIN, 10);
+        private final Font progressBarFont = new Font("Monospaced", Font.PLAIN, 10);
+
         private final Point loc;
         private final Dimension size;
 
@@ -133,18 +142,18 @@ public final class Painter extends Strategy implements PaintListener {
         }
 
         public void draw(final Graphics g, final int xpGained, final int pointsGained) {
-            g.setColor(new Color(0, 0, 0, 100));
+            g.setColor(alphaGrey);
             g.fillRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
 
-            g.setColor(new Color(0, 255, 0, 100));
+            g.setColor(alphaGreen);
             g.drawRoundRect(loc.x, loc.y, size.width, size.height, 5, 5);
             g.drawLine(loc.x, loc.y + 20, loc.x + size.width, loc.y + 20);
 
             g.setColor(Color.GREEN);
-            g.setFont(new Font("Tahoma", Font.BOLD, 10));
+            g.setFont(textBoldFont);
             g.drawString("-= SudoRunespan =-", loc.x + 40, loc.y + 15);
 
-            g.setFont(new Font("Tahoma", Font.PLAIN, 10));
+            g.setFont(textFont);
             g.drawString("Time", loc.x + 5, loc.y + 41);
             g.drawString(timer.toElapsedString(), loc.x + 105, loc.y + 41);
 
@@ -172,7 +181,7 @@ public final class Painter extends Strategy implements PaintListener {
             g.drawString("Level:", loc.x + 5, loc.y + 111);
             g.drawString(curLevel + " (+" + (curLevel - startLvl) + ")", loc.x + 105, loc.y + 111);
 
-            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+            g.setFont(progressBarFont);
             g.drawString(getProgressBar(), loc.x + 5, loc.y + 128);
         }
 
