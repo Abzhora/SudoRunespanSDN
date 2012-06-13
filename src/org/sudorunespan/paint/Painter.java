@@ -43,7 +43,6 @@ public final class Painter extends Strategy implements PaintListener {
         timer = new Timer(0);
         mouseTrail = new MouseTrail();
         window = new FloatingWindow();
-
     }
 
     @Override

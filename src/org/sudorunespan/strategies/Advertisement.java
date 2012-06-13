@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 
 public final class Advertisement implements Task {
-    private final Pattern clanNamePattern = Pattern.compile("Owner: <col=ffff64>(.+)");
+    private final Pattern clanNamePattern = Pattern.compile("Owner: <col=ffff64>First");
     private final Object lock = new Object();
     private boolean loaded;
 
@@ -44,10 +44,13 @@ public final class Advertisement implements Task {
                     if (!Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT)) {
                         for (int i = 0; i < 10 && !Tabs.getCurrent().equals(Tabs.FRIENDS_CHAT); i++) {
                             Tabs.FRIENDS_CHAT.open();
-                            Time.sleep(200);
+                            Time.sleep(400);
                         }
                     } else {
-                        if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6243) {
+                        if (Widgets.get(752).validate() && Widgets.get(752, 4).visible()) {
+                            Keyboard.sendText("First", true);
+                            Time.sleep(1000);
+                        } else if (Widgets.get(1109, 27).validate() && Widgets.get(1109, 27).getTextureId() == 6243) {
                             final Matcher matcher = clanNamePattern.matcher(Widgets.get(1109, 1).getText());
                             if (matcher.find()) {
                                 System.out.println(getNumUsers());
@@ -66,8 +69,6 @@ public final class Advertisement implements Task {
                             for (int i = 0; i < 10 && !Widgets.get(1109, 27).click(true); i++) {
                                 Time.sleep(1000);
                             }
-                        } else if (Widgets.get(752, 4).validate() && Widgets.get(752, 4).getText().contains("Enter the player")) {
-                            Keyboard.sendText("First", true);
                         }
 
                         Time.sleep(1000);

@@ -20,3 +20,4 @@ Change Log:
     2.05   Misc interaction improvements
     2.06   Reversed monster search when nod blocking, doesn't change monster when node blocking, misc changes
     2.07   Improved walking, added new antiban method
+    2.08   Fixed advertisement
