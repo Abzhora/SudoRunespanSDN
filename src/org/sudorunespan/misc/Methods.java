@@ -105,13 +105,15 @@ public final class Methods {
         Node bestNodeValue = null;
 
         for (SceneObject object : realNodes) {
-            final Node tempNode = Node.getNode(object.getId());
+            if (object.validate()) {
+                final Node tempNode = Node.getNode(object.getId());
 
-            if (bestNode == null || tempNode.ordinal() > bestNodeValue.ordinal() ||
-                    (tempNode.ordinal() == bestNodeValue.ordinal() &&
-                            distanceTo(object.getLocation()) < distanceTo(bestNode.getLocation()))) {
-                bestNode = object;
-                bestNodeValue = tempNode;
+                if (bestNode == null || tempNode.ordinal() > bestNodeValue.ordinal() ||
+                        (tempNode.ordinal() == bestNodeValue.ordinal() &&
+                                distanceTo(object.getLocation()) < distanceTo(bestNode.getLocation()))) {
+                    bestNode = object;
+                    bestNodeValue = tempNode;
+                }
             }
         }
 
@@ -137,14 +139,16 @@ public final class Methods {
         Monster bestMonsterValue = null;
 
         for (NPC npc : realNpcs) {
-            final Monster tempMonster = Monster.getMonster(npc.getId());
+            if (npc.validate()) {
+                final Monster tempMonster = Monster.getMonster(npc.getId());
 
-            if (bestMonster == null || (nodeBlocking ? tempMonster.ordinal() < bestMonsterValue.ordinal() :
-                    tempMonster.ordinal() > bestMonsterValue.ordinal()) ||
-                    (tempMonster.ordinal() == bestMonsterValue.ordinal() &&
-                            distanceTo(npc.getLocation()) < distanceTo(bestMonster.getLocation()))) {
-                bestMonster = npc;
-                bestMonsterValue = tempMonster;
+                if (bestMonster == null || (nodeBlocking ? tempMonster.ordinal() < bestMonsterValue.ordinal() :
+                        tempMonster.ordinal() > bestMonsterValue.ordinal()) ||
+                        (tempMonster.ordinal() == bestMonsterValue.ordinal() &&
+                                distanceTo(npc.getLocation()) < distanceTo(bestMonster.getLocation()))) {
+                    bestMonster = npc;
+                    bestMonsterValue = tempMonster;
+                }
             }
         }
 
