@@ -81,7 +81,7 @@ public final class OverlayPaint extends Strategy implements PaintListener {
         drawMouse(g);
 
         if (banner != null) {
-            g.drawImage(banner, 216, 264, null);
+            g.drawImage(banner, 216, 314, null);
         } else {
             try {
                 banner = ImageIO.read(new URL("http://i50.tinypic.com/2edtyeq.png").openStream());
@@ -137,7 +137,7 @@ public final class OverlayPaint extends Strategy implements PaintListener {
         private final Dimension size;
 
         public FloatingWindow() {
-            loc = new Point(10, 180);
+            loc = new Point(10, 230);
             size = new Dimension(200, 135);
         }
 
